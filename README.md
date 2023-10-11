@@ -1,2 +1,1 @@
-# hello-world
-Hello world new project template.
+# cocos creator 框架
