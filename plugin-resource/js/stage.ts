@@ -1,0 +1,2 @@
+window['XMLData'] = window['XMLData'] || {};
+window['XMLData']['stage'] = [{"id":1,"width":2250,"height":500,"obstacle":"[{\"id\":1001,\"configId\":1,\"x\":-374,\"y\":0,\"campId\":1,\"hp\":100},{\"id\":1002,\"configId\":1,\"x\":-733,\"y\":0,\"campId\":1,\"hp\":100},{\"id\":1003,\"configId\":1,\"x\":-1091,\"y\":0,\"campId\":1,\"hp\":100},{\"id\":2001,\"configId\":1,\"x\":374,\"y\":0,\"campId\":2,\"hp\":100},{\"id\":2002,\"configId\":1,\"x\":733,\"y\":0,\"campId\":2,\"hp\":100},{\"id\":2003,\"configId\":1,\"x\":1091,\"y\":0,\"campId\":2,\"hp\":100}]"}]

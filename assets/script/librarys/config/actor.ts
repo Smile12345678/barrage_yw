@@ -1,0 +1,2 @@
+window['XMLData'] = window['XMLData'] || {};
+window['XMLData']['actor'] = [{"id":1,"name":"障碍物","type":2,"subType":201,"hp":100,"attack":0,"defense":0,"attackSpeed":0,"pulling":0,"killPoints":1,"skill":"","action_index":0},{"id":1001,"name":"怪物","type":1,"subType":101,"hp":1000,"attack":30,"defense":50,"attackSpeed":50,"pulling":40,"killPoints":10,"skill":10001,"action_index":1}]

@@ -1,0 +1,205 @@
+package com.hb.socket;
+option java_package = "com.popdog.pb";
+option java_outer_classname = "PBSocket";
+
+message CMsgBase {
+    // 存放 msgHead
+    required CMsgHead msghead = 1;
+    //存放某个 message
+    optional bytes msgbody = 2;
+}
+
+message CMsgHead {
+    // MessageType 类型
+    required int32 msgtype = 1;
+    // MessageCode 错误码
+    required int32 msgcode = 2;
+}
+
+enum MessageCode {
+    SYS_NORMAL = 1; // 正常的通信,非1的话就是有错误
+    UNKNOWN = 2; // 未知错误
+    USER_NOT_EXIST = 3; // 用户不存在
+    SYS_DATA_ERROR = 4; //数据异常
+    LOGIN_GATEWAY_FAIL = 5; //平台验证失败
+    SYS_CHANGE_NAME_IS_NULL = 6; //名字不能为空
+    SYS_CHANGE_NAME_HAS_SPECIAL_CHAR = 7; //含有特殊字符
+    SYS_CHANGE_NAME_IS_TOO_LONG = 8; //字符太长
+    SYS_CHANGE_NAME_IS_SENSITIVE = 9; //含有屏蔽字
+    SYS_CHANGE_NAME_IS_EXIST = 10; //名字已存在
+    USER_BANNED = 11; //你已经被封号
+    NO_MONEY_ERROR = 12; //钱不够
+    ILLICIT_PARAM = 16; //非法参数
+    NO_DATA = 17; //没有数据
+    NOT_ENOUGH_GEM = 18; //高级零件不足
+    EXCEEDS = 19; //超过规定次数
+    TOKEN_IS_VALID = 20; //token无效
+    OTHER_DEVICE_LOGIN = 21; //其他设备登录
+}
+
+enum MessageType {
+    //系统消息
+    MSG_HEART_BEAT = 10001; //心跳
+    MSG_OTHER_DEVICE_LOGIN = 10002; //其他设备登录 关闭连接
+    MSG_USER_LOGIN = 104; //登录大厅
+
+
+    MSG_NOTICE_MSG = 204; //公告
+    MSG_PUSH_NOTICE_MSG = 205; //推送公告
+    MSG_MAINTAIN = 206; //服务器维护
+    MSG_DATA_CHANGE = 207; //数据变化
+
+    MSG_ENTER_ROOM = 300; //进入房间
+    MSG_SKILL_ATTACK = 301;  //技能攻击
+    MSG_DEAD = 302;  //死亡
+    MSG_MOVE = 303;  //移动
+    MSG_MONSTER_ENTER = 304;//怪物进入
+}
+
+//进入房间
+message CS_ENTER_ROOM {
+    required string roomId = 1;
+}
+
+//进入房间
+message SC_ENTER_ROOM {
+    repeated CampInfo campInfos = 1; //阵营数组
+    optional Pole pole = 4; //杆子
+}
+
+//技能攻击
+message SC_SKILL_ATTACK {
+    optional int32 skillId = 1;//技能ID
+    repeated Harm harms = 2;//伤害数组
+}
+
+//死亡
+message SC_DEAD {
+    repeated int64 ids = 1; //目标ID
+}
+
+//怪物移动
+message SC_MOVE {
+    optional int64 id = 1; //目标ID
+    optional int32 x = 3; //坐标x
+    optional int32 y = 4; //坐标y
+}
+
+//怪物进入
+message SC_MONSTER_ENTER {
+    repeated Monster monsters = 1; //怪物数据
+}
+
+//伤害
+message Harm {
+    optional int64 id = 1; //目标ID
+    optional int32 hp = 2;//当前血量
+    optional int32 maxHp = 3;//最大血量
+}
+
+message CampInfo {
+    optional int32 campId = 1; //阵营ID
+    repeated Monster monsters = 2; //怪物数据
+    repeated Obstacle obstacles = 3; //障碍数据
+}
+
+//怪物
+message Monster {
+    optional int64 id = 1; //怪物ID
+    optional int32 configId = 2; //对应的配置数据ID
+    optional int32 x = 3; //坐标x
+    optional int32 y = 4; //坐标y
+    optional int32 hp = 5;//当前血量
+    optional int32 maxHp = 6;//最大血量
+    optional int32 campId = 7;//1-左边阵营 2-右边阵营
+
+}
+
+
+//障碍物
+message Obstacle {
+    optional int64 id = 1; //唯一ID
+    optional int32 configId = 2; //对应的配置数据ID
+    optional int32 hp = 3;//当前血量
+    optional int32 maxHp = 4;//最大血量
+}
+
+//杆子
+message Pole {
+    optional int64 id = 1; //唯一ID
+    optional int32 x = 2; //坐标x
+    optional int32 y = 3; //坐标y
+}
+
+
+// 公告请求
+message CS_NOTICE {
+}
+
+// 公告响应
+message NoticeItem {
+    required int32 id = 1; // 公告ID
+    required int32 type = 2; // 公告类型
+    required string title = 3; // 标题
+    required string simpleDes = 4; // 简单描述
+    optional string des = 5; // 描述
+    required int32 strategy = 6; // 策略
+}
+
+message SC_NOTICE {
+    repeated NoticeItem items = 1; //公告列表数据
+}
+
+//发货协议
+message InnerDeliverGoods {
+    required int64 roleId = 1; // 玩家角色id
+    required string orderId = 2; //订单号
+    required string goodsId = 3; //商品id
+    required int32 goodsCopies = 4; //商品数量
+    optional int32 type = 5; //场次类型 1-初级场 2-中级场 3-高级场
+    optional string openId = 6; //openid
+    optional int32 platform = 7; //平台
+    optional bool gift = 8; //礼物
+}
+
+//内部GM指令
+message InnerGM {
+    required int32 cmd = 1; //GM指令
+    required string content = 2; //GM内容
+}
+
+//历史记录
+message InnerHistory {
+    required int32 cmd = 1; //GM指令
+}
+
+//数据变化
+message SC_DATA_CHANGE_MSG {
+    optional int64 money = 1; //油桶数量
+    optional int32 exp = 2; //经验
+    optional int32 level = 3; //等级
+    optional int64 type = 4; //1-初级 2-中级 3-高级
+}
+
+//客戶端時間戳
+message CS_Heartbeat {
+    required int64 time = 1;
+}
+
+//客戶端時間戳
+message SC_Heartbeat {
+    required int64 time = 1;
+}
+
+message InnerHotAgent {
+    required string clsName = 1;
+    required bytes array = 2;
+}
+
+message InnerCloseOtherDevice {
+    required string connKey = 1;
+}
+
+message InnerOffline {
+    required string connKey = 1;
+}

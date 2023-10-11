@@ -1,0 +1,1 @@
+const Fs=require("fs");function FontEngineRequire(e){let n=Editor.url(`packages://bitmap-font/panel-ttf/core/${e}`);Fs.existsSync(n)&&require(n)}FontEngineRequire("main.js"),FontEngineRequire("fontLoader.js"),FontEngineRequire("font.js"),FontEngineRequire("util.js"),FontEngineRequire("save.js");
